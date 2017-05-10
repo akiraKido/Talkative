@@ -1,5 +1,0 @@
-C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompiler\bin\Debug\TalkativeCompiler.dll
-C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompiler\bin\Debug\TalkativeCompiler.pdb
-C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompiler\obj\Debug\TalkativeCompiler.csprojResolveAssemblyReference.cache
-C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompiler\obj\Debug\TalkativeCompiler.dll
-C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompiler\obj\Debug\TalkativeCompiler.pdb
