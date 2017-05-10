@@ -1,0 +1,9 @@
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\bin\Debug\TalkativeCompilerTests.dll
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\bin\Debug\TalkativeCompilerTests.pdb
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\bin\Debug\TalkativeCompiler.dll
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\bin\Debug\TalkativeCompiler.pdb
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\bin\Debug\ja\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\obj\Debug\TalkativeCompilerTests.csprojResolveAssemblyReference.cache
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\obj\Debug\TalkativeCompilerTests.dll
+C:\document\PCSP\SP app\SDK-インターステーシャル\設計\広告ＩＤターゲティング\src\trunk\TalkativeApp\TalkativeCompilerTests\obj\Debug\TalkativeCompilerTests.pdb
