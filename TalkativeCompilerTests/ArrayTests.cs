@@ -91,5 +91,25 @@ namespace TalkativeCompilerTests
             };
             TalkativeTests.TryTest( test, expected );
         }
+
+        [TestMethod]
+        public void ArrayInsideArray()
+        {
+            var test = "x := #( #(1 10) 10 ).";
+            var expected = new List<Token>
+            {
+                new Token( TokenType.Identifier, "x" ),
+                new Token( TokenType.AssignmentOperator, ":=" ),
+                new Token( TokenType.ArrayStart, "(" ),
+                new Token( TokenType.ArrayStart, "(" ),
+                new Token( TokenType.Numeral, "1" ),
+                new Token( TokenType.Numeral, "10" ),
+                new Token( TokenType.ArrayEnd, ")" ),
+                new Token( TokenType.Numeral, "10" ),
+                new Token( TokenType.ArrayEnd, ")" ),
+            };
+            TalkativeTests.TryTest( test, expected );
+
+        }
     }
 }
