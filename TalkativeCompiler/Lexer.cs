@@ -39,6 +39,7 @@ namespace TalkativeCompiler
         private int currentPosition;
         private int currentLine;
         private char lastChar = ' ';
+        private const char EOF = '\0';
 
         internal Lexer ( string input )
         {
@@ -66,7 +67,7 @@ namespace TalkativeCompiler
 
         private Token GetNextToken()
         {
-            if ( char.IsWhiteSpace( lastChar ) ) ProceedToNextToken();
+            if ( char.IsWhiteSpace( lastChar ) ) ProceedToNextChar();
 
             Token token;
 
@@ -80,22 +81,22 @@ namespace TalkativeCompiler
                     // コメントアウト
                     while ( currentPosition < Input.Length )
                     {
-                        lastChar = Input[currentPosition++];
+                        ProceedToNextChar();
                         if ( currentPosition >= Input.Length
-                             || lastChar == '"' && Input[currentPosition] != '"' )
+                             || lastChar == '"' && PeekNextChar() != '"' )
                         {
                             break;
                         }
                     }
-                    ProceedToNextToken();
+                    ProceedToNextChar(); // " を消費
                     return GetNextToken();
                 case '#':
                     // シンボル
-                    ProceedToNextToken(); // # を消費
+                    ProceedToNextChar(); // # を消費
                     if ( lastChar == '(' )
                     {
                         // 配列開始
-                        ProceedToNextToken(); // ( を消費
+                        ProceedToNextChar(); // ( を消費
                         return new Token( TokenType.ArrayStart, "(" );
                     }
                     else
@@ -106,20 +107,20 @@ namespace TalkativeCompiler
                         {
                             symbol += lastChar.ToString();
                             if ( currentPosition >= Input.Length ) break;
-                            ProceedToNextToken();
+                            ProceedToNextChar();
                         }
                         return new Token( TokenType.Symbol, symbol );
                     }
                 case ')':
-                    ProceedToNextToken(); // ) を消費
+                    ProceedToNextChar(); // ) を消費
                     return new Token( TokenType.ArrayEnd, ")" );
                 case ':':
                     // 代入
-                    if ( Input[currentPosition] == '=' )
+                    if ( PeekNextChar() == '=' )
                     {
                         token = new Token( TokenType.AssignmentOperator, ":=" );
                         currentPosition++; // :を消費
-                        lastChar = Input[currentPosition++]; // = を消費
+                        ProceedToNextChar(); // = を消費
                         return token;
                     }
 
@@ -128,22 +129,22 @@ namespace TalkativeCompiler
                 case '.':
                     // 行区切り
                     token = new Token( TokenType.LineBreak, "." );
-                    lastChar = Input[currentPosition++]; // '.' を消費
+                    ProceedToNextChar(); // '.' を消費
                     return token;
                 case '\'':
                     // 文字列リテラル
                     string stringValue = string.Empty;
                     while ( true )
                     {
-                        lastChar = Input[currentPosition++];
+                        ProceedToNextCharWithWhiteSpaces();
                         if ( lastChar == '\'' )
                         {
                             if ( PeekNextChar() == ',' )
                             {
                                 // 結合文字列だった場合
-                                ProceedToNextToken(); // "'" を消費
-                                ProceedToNextToken(); // "," を消費
-                                ProceedToNextToken(); // "'" を消費
+                                ProceedToNextChar(); // "'" を消費
+                                ProceedToNextChar(); // "," を消費
+                                ProceedToNextChar(); // "'" を消費
                             }
                             else
                             {
@@ -160,7 +161,7 @@ namespace TalkativeCompiler
 
                     if ( currentPosition < Input.Length )
                     {
-                        lastChar = Input[currentPosition++]; // ' を消費
+                        ProceedToNextChar(); // ' を消費
                     }
                     return new Token( TokenType.StringLiteral, stringValue );
             }
@@ -175,7 +176,8 @@ namespace TalkativeCompiler
                 {
                     numberString += lastChar;
                     if ( currentPosition >= Input.Length ) break;
-                    lastChar = Input[currentPosition++];
+                    // 次が数字の場合があるので
+                    ProceedToNextCharWithWhiteSpaces();
                 } while ( char.IsDigit( lastChar ) || lastChar == '.' );
 
                 // 行区切りの場合
@@ -197,7 +199,7 @@ namespace TalkativeCompiler
 
             // 文字列
             string value = lastChar.ToString();
-            while ( char.IsLetterOrDigit( lastChar = Input[currentPosition++] ) )
+            while ( char.IsLetterOrDigit( ProceedToNextChar() ) )
             {
                 value += lastChar;
                 if ( currentPosition >= Input.Length ) break;
@@ -205,40 +207,50 @@ namespace TalkativeCompiler
             return new Token( TokenType.Identifier, value );
         }
 
-        private void ProceedToNextToken()
+        private char ProceedToNextChar()
         {
             if ( currentPosition >= Input.Length )
             {
                 lastChar = '\0';
-                return;
             }
-
-            do
+            else
             {
-                lastChar = Input[currentPosition++];
-                if ( lastChar.Equals( '\n' ) )
+                do
                 {
-                    currentLine++;
-                }
+                    lastChar = Input[currentPosition++];
+                    if ( lastChar.Equals( '\n' ) )
+                    {
+                        currentLine++;
+                    }
 
-                if ( currentPosition >= Input.Length ) break;
-            } while ( char.IsWhiteSpace( lastChar ) );
+                    if ( currentPosition >= Input.Length ) break;
+                } while ( char.IsWhiteSpace( lastChar ) );
+            }
+            return lastChar;
+        }
+
+        private char ProceedToNextCharWithWhiteSpaces()
+        {
+            lastChar = currentPosition >= Input.Length
+                ? '\0' 
+                : Input[currentPosition++];
+            return lastChar;
         }
 
         private char PeekNextChar()
         {
-            if ( currentPosition >= Input.Length ) return ' ';
+            if ( currentPosition >= Input.Length ) return '\0';
 
             int localCurrent = currentPosition;
 
-            var lastChar = Input[localCurrent];
-            while ( char.IsWhiteSpace( lastChar ) )
+            char _lastChar;
+            do
             {
-                lastChar = Input[localCurrent++];
-                if(localCurrent >= Input.Length) break;
-            }
+                _lastChar = Input[localCurrent++];
+                if ( localCurrent >= Input.Length ) break;
+            } while ( char.IsWhiteSpace( _lastChar ) );
 
-            return lastChar;
+            return _lastChar;
         }
     }
 }
