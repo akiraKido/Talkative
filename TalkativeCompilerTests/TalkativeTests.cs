@@ -112,50 +112,6 @@ namespace TalkativeCompilerTests
         }
 
         [TestMethod]
-        public void ArrayTest()
-        {
-            var test = "#(10 5)";
-            var expected = new List<Token>
-            {
-                new Token( TokenType.ArrayStart, "(" ),
-                new Token( TokenType.Numeral, "10" ),
-                new Token( TokenType.Numeral, "5" ),
-                new Token( TokenType.ArrayEnd, ")" ),
-            };
-            TryTest( test, expected );
-
-            test = "#(10 5).";
-            TryTest( test, expected );
-
-            test = "x := #(10 5).";
-            expected = new List<Token>
-            {
-                new Token( TokenType.Identifier, "x" ),
-                new Token( TokenType.AssignmentOperator, ":=" ),
-                new Token( TokenType.ArrayStart, "(" ),
-                new Token( TokenType.Numeral, "10" ),
-                new Token( TokenType.Numeral, "5" ),
-                new Token( TokenType.ArrayEnd, ")" ),
-            };
-            TryTest( test, expected );
-            
-            test = "x := #(10 'SmallTalk').";
-            expected = new List<Token>
-            {
-                new Token( TokenType.Identifier, "x" ),
-                new Token( TokenType.AssignmentOperator, ":=" ),
-                new Token( TokenType.ArrayStart, "(" ),
-                new Token( TokenType.Numeral, "10" ),
-                new Token( TokenType.StringLiteral, "SmallTalk" ),
-                new Token( TokenType.ArrayEnd, ")" ),
-            };
-            TryTest( test, expected );
-
-            test = "x := #(10 'SmallTalk' ).";
-            TryTest( test, expected );
-        }
-
-        [TestMethod]
         public void TotalTest1()
         {
             string test = "\"this is a test\"" + Environment.NewLine +
@@ -175,14 +131,14 @@ namespace TalkativeCompilerTests
             TryTest( test, expected );
         }
 
-        private void TryTest(string sourceCode, List<Token> expected)
+        internal static void TryTest(string sourceCode, List<Token> expected)
         {
             var actual = Talkative.Parse( sourceCode );
             AssertEqual( expected, actual );
 
         }
 
-        private void AssertEqual( List<Token> expected, IEnumerable<Token> actual )
+        private static void AssertEqual( List<Token> expected, IEnumerable<Token> actual )
         {
             Assert.AreEqual( expected.Count, actual.Count() );
 

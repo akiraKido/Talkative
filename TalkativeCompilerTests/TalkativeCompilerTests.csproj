@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ArrayTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TalkativeTests.cs" />
   </ItemGroup>
