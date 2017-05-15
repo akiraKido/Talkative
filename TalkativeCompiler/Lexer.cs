@@ -18,7 +18,9 @@ namespace TalkativeCompiler
         StringConnector = -7,
         Symbol = -8,
         ArrayStart = -9,
-        ArrayEnd = -10
+        ArrayEnd = -10,
+
+        Predefined = -99
     }
 
     public class Token
@@ -35,6 +37,8 @@ namespace TalkativeCompiler
 
     internal class Lexer
     {
+        private static readonly string[] PredefinedStrings = { "true", "false", "nil", "self", "super", "thisContext" };
+
         private string Input { get; }
         private int currentPosition;
         private int currentLine;
@@ -204,7 +208,10 @@ namespace TalkativeCompiler
                 value += lastChar;
                 if ( currentPosition >= Input.Length ) break;
             }
-            return new Token( TokenType.Identifier, value );
+
+            return PredefinedStrings.Contains( value )
+                ? new Token( TokenType.Predefined, value )
+                : new Token( TokenType.Identifier, value );
         }
 
         private char ProceedToNextChar()

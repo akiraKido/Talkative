@@ -12,7 +12,6 @@ namespace TalkativeCompilerTests
     public class ArrayTests
     {
 
-
         [TestMethod]
         public void ArrayTest ()
         {
