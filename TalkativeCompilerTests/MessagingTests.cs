@@ -42,5 +42,35 @@ namespace TalkativeCompilerTests
             TalkativeTests.TryTest( test, expected );
 
         }
+
+        // 10 / 2. "(10/2)という分数"
+        [TestMethod]
+        public void BinaryMethodTest2 ()
+        {
+            var test = "10 / 2. \"(10/2)という分数\"";
+            var expected = new List<Token>
+            {
+                new Token( TokenType.Numeral, "10" ),
+                new Token( TokenType.Identifier, "/" ),
+                new Token( TokenType.Numeral, "2" )
+            };
+            TalkativeTests.TryTest( test, expected );
+
+        }
+
+        // 5 // 3. "商"
+        [TestMethod]
+        public void BinaryMethodTest3 ()
+        {
+            var test = "5 // 3. \"商\"";
+            var expected = new List<Token>
+            {
+                new Token( TokenType.Numeral, "5" ),
+                new Token( TokenType.Identifier, "//" ),
+                new Token( TokenType.Numeral, "3" )
+            };
+            TalkativeTests.TryTest( test, expected );
+
+        }
     }
 }

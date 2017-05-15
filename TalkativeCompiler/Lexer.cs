@@ -203,10 +203,12 @@ namespace TalkativeCompiler
 
             // 文字列
             string value = lastChar.ToString();
-            while ( char.IsLetterOrDigit( ProceedToNextCharWithWhiteSpaces() ) )
+            var nextChar = ProceedToNextCharWithWhiteSpaces();
+            while ( !char.IsWhiteSpace( nextChar ) && nextChar != '.' )
             {
                 value += lastChar;
                 if ( currentPosition >= Input.Length ) break;
+                nextChar = ProceedToNextCharWithWhiteSpaces();
             }
 
             return PredefinedStrings.Contains( value )
