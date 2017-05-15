@@ -20,6 +20,11 @@ namespace TalkativeCompiler
         ArrayStart = -9,
         ArrayEnd = -10,
 
+        BlockStart = -11,
+        BlockEnd = -12,
+        BlockSeparator = -13,
+        BlockArgument = -14,
+
         Predefined = -99
     }
 
@@ -38,12 +43,14 @@ namespace TalkativeCompiler
     internal class Lexer
     {
         private static readonly string[] PredefinedStrings = { "true", "false", "nil", "self", "super", "thisContext" };
+        private static readonly string[] Operands = {"+", "-", "*", "/", "//", @"\\"};
 
         private string Input { get; }
         private int currentPosition;
         private int currentLine;
         private char lastChar = ' ';
         private const char EOF = '\0';
+        private bool inBlock;
 
         internal Lexer ( string input )
         {
@@ -128,7 +135,17 @@ namespace TalkativeCompiler
                         return token;
                     }
 
-                    // TODO: コロン単体は呼び出し
+                    if ( inBlock )
+                    {
+                        ProceedToNextChar(); // ':' を消費
+                        string blockArgument = lastChar.ToString();
+                        while ( char.IsLetterOrDigit( ProceedToNextCharWithWhiteSpaces() ) )
+                        {
+                            blockArgument += lastChar.ToString();
+                        }
+                        return new Token( TokenType.BlockArgument, blockArgument );
+                    }
+
                     throw new NotImplementedException();
                 case '.':
                     // 行区切り
@@ -168,6 +185,18 @@ namespace TalkativeCompiler
                         ProceedToNextChar(); // ' を消費
                     }
                     return new Token( TokenType.StringLiteral, stringValue );
+                // ブロック構文
+                case '[':
+                    ProceedToNextChar(); // [ を消費
+                    inBlock = true;
+                    return new Token( TokenType.BlockStart, "[" );
+                case '|':
+                    ProceedToNextChar(); // | を消費
+                    return new Token( TokenType.BlockSeparator, "|" );
+                case ']':
+                    ProceedToNextChar(); // ] を消費
+                    inBlock = false;
+                    return new Token( TokenType.BlockEnd, "]" );
             }
            
             // 数字リテラル
@@ -204,11 +233,17 @@ namespace TalkativeCompiler
             // 文字列
             string value = lastChar.ToString();
             var nextChar = ProceedToNextCharWithWhiteSpaces();
-            while ( !char.IsWhiteSpace( nextChar ) && nextChar != '.' )
+            while ( char.IsLetterOrDigit( nextChar ) )
             {
                 value += lastChar;
                 if ( currentPosition >= Input.Length ) break;
                 nextChar = ProceedToNextCharWithWhiteSpaces();
+            }
+            
+            if ( Operands.Contains( value + lastChar ) )
+            {
+                value += lastChar;
+                ProceedToNextChar();
             }
 
             return PredefinedStrings.Contains( value )

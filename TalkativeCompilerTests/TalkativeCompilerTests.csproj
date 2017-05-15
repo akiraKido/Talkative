@@ -52,6 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ArrayTests.cs" />
+    <Compile Include="BlockTests.cs" />
     <Compile Include="MessagingTests.cs" />
     <Compile Include="PredefinedStringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
