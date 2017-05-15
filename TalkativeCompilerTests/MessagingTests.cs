@@ -28,5 +28,19 @@ namespace TalkativeCompilerTests
             };
             TalkativeTests.TryTest( test, expected );
         }
+
+        [TestMethod]
+        public void BinaryMethodTest1()
+        {
+            var test = "4 + 1.";
+            var expected = new List<Token>
+            {
+                new Token( TokenType.Numeral, "4" ),
+                new Token( TokenType.Identifier, "+" ),
+                new Token( TokenType.Numeral, "1" )
+            };
+            TalkativeTests.TryTest( test, expected );
+
+        }
     }
 }

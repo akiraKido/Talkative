@@ -203,7 +203,7 @@ namespace TalkativeCompiler
 
             // 文字列
             string value = lastChar.ToString();
-            while ( char.IsLetterOrDigit( ProceedToNextChar() ) )
+            while ( char.IsLetterOrDigit( ProceedToNextCharWithWhiteSpaces() ) )
             {
                 value += lastChar;
                 if ( currentPosition >= Input.Length ) break;
