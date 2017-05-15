@@ -152,7 +152,7 @@ namespace TalkativeCompiler
                             }
                             else
                             {
-                                if ( currentPosition >= Input.Length || PeekNextChar() != '\'' )
+                                if ( currentPosition >= Input.Length || PeekNextCharWithWhiteSpaces() != '\'' )
                                 {
                                     break;
                                 }
@@ -258,6 +258,13 @@ namespace TalkativeCompiler
             } while ( char.IsWhiteSpace( _lastChar ) );
 
             return _lastChar;
+        }
+
+        private char PeekNextCharWithWhiteSpaces()
+        {
+            if ( currentPosition >= Input.Length ) return '\0';
+            
+            return Input[currentPosition];
         }
     }
 }
