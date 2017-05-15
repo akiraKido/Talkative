@@ -52,6 +52,7 @@
             this.compile_Button.TabIndex = 1;
             this.compile_Button.Text = "Compile";
             this.compile_Button.UseVisualStyleBackColor = true;
+            this.compile_Button.Click += new System.EventHandler(this.compile_Button_Click);
             // 
             // output_TextBox
             // 

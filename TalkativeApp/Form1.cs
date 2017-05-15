@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TalkativeCompiler;
 
 namespace TalkativeApp
 {
@@ -20,6 +21,16 @@ namespace TalkativeApp
         private void output_TextBox_KeyPress ( object sender, KeyPressEventArgs e )
         {
             e.Handled = true;
+        }
+
+        private void compile_Button_Click ( object sender, EventArgs e )
+        {
+            IEnumerable<Token> result = Talkative.Parse( input_TextBox.Text );
+            output_TextBox.Text = string.Empty;
+            foreach ( Token token in result )
+            {
+                output_TextBox.Text += $"{token.Type}:{token.Value}" + Environment.NewLine;
+            }
         }
     }
 }
