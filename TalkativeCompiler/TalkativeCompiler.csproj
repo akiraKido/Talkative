@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST.cs" />
     <Compile Include="Lexer.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Talkative.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

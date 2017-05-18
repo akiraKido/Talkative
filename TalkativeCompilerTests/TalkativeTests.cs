@@ -133,7 +133,7 @@ namespace TalkativeCompilerTests
 
         internal static void TryTest(string sourceCode, List<Token> expected)
         {
-            var actual = Talkative.Parse( sourceCode );
+            var actual = Talkative.GetTokens( sourceCode );
             AssertEqual( expected, actual );
 
         }

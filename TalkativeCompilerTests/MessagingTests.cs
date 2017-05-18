@@ -66,7 +66,7 @@ namespace TalkativeCompilerTests
             var expected = new List<Token>
             {
                 new Token( TokenType.Numeral, "5" ),
-                new Token( TokenType.Identifier, "//" ),
+                new Token( TokenType.Operand, "//" ),
                 new Token( TokenType.Numeral, "3" )
             };
             TalkativeTests.TryTest( test, expected );

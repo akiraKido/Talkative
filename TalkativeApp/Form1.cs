@@ -25,7 +25,7 @@ namespace TalkativeApp
 
         private void compile_Button_Click ( object sender, EventArgs e )
         {
-            IEnumerable<Token> result = Talkative.Parse( input_TextBox.Text );
+            IEnumerable<Token> result = Talkative.GetTokens( input_TextBox.Text );
             output_TextBox.Text = string.Empty;
             foreach ( Token token in result )
             {

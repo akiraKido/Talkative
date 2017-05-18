@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,10 @@ namespace TalkativeCompiler
         BlockSeparator = -13,
         BlockArgument = -14,
 
+        Operand = -15,
+        Return = -16,
+        MessageKeyword = -17,
+
         Predefined = -99
     }
 
@@ -43,7 +48,7 @@ namespace TalkativeCompiler
     internal class Lexer
     {
         private static readonly string[] PredefinedStrings = { "true", "false", "nil", "self", "super", "thisContext" };
-        private static readonly string[] Operands = {"+", "-", "*", "/", "//", @"\\"};
+        private static readonly string[] Operands = {"+", "-", "*", "/", "//", @"\\", ","};
 
         private string Input { get; }
         private int currentPosition;
@@ -57,7 +62,7 @@ namespace TalkativeCompiler
             Input = input;
         }
 
-        internal IEnumerable<Token> GetTokens ()
+        internal IEnumerable<Token> GenerateTokens ()
         {
             var tokens = new List<Token>();
 
@@ -88,6 +93,9 @@ namespace TalkativeCompiler
                 case '\0':
                     // 何もなし
                     return null;
+                case '^':
+                    ProceedToNextChar(); // ^ を消費
+                    return new Token( TokenType.Return, "^" );
                 case '"':
                     // コメントアウト
                     while ( currentPosition < Input.Length )
@@ -165,7 +173,16 @@ namespace TalkativeCompiler
                                 // 結合文字列だった場合
                                 ProceedToNextChar(); // "'" を消費
                                 ProceedToNextChar(); // "," を消費
-                                ProceedToNextChar(); // "'" を消費
+                                //ProceedToNextChar(); // "'" を消費
+                                if ( lastChar == '\'' )
+                                {
+                                    ProceedToNextChar();
+                                }
+                                else
+                                {
+                                    // 純粋な文字列同士の結合でない場合コンマを戻す
+                                    ReturnOneChar();
+                                }
                             }
                             else
                             {
@@ -216,12 +233,13 @@ namespace TalkativeCompiler
                 // 行区切りの場合
                 if ( numberString[numberString.Length - 1] == '.' )
                 {
-                    if ( currentPosition < Input.Length )
-                    {
-                        // 最終行は戻りすぎる為
-                        currentPosition--;
-                    }
-                    currentPosition--;
+                    //if ( currentPosition < Input.Length )
+                    //{
+                    //    // 最終行は戻りすぎる為
+                    //    ReturnOneChar();
+                    //}
+                    while(lastChar != '.') ReturnOneChar();
+                    currentPosition++; // カーソル
                     numberString = numberString.Substring( 0, numberString.Length - 1 );
                 }
 
@@ -244,11 +262,24 @@ namespace TalkativeCompiler
             {
                 value += lastChar;
                 ProceedToNextChar();
+                return new Token( TokenType.Operand, value );
             }
 
-            return PredefinedStrings.Contains( value )
-                ? new Token( TokenType.Predefined, value )
-                : new Token( TokenType.Identifier, value );
+            if ( PredefinedStrings.Contains( value ) )
+            {
+                return new Token( TokenType.Predefined, value );
+            }
+
+            if ( lastChar == ':' || PeekNextChar() == ':' )
+            {
+                ProceedToNextChar(); // : を消費
+                if ( PeekNextChar() != '=' )
+                {
+                    return new Token( TokenType.MessageKeyword, value );
+                }
+            }
+
+            return new Token( TokenType.Identifier, value );
         }
 
         private char ProceedToNextChar()
@@ -270,6 +301,12 @@ namespace TalkativeCompiler
                     if ( currentPosition >= Input.Length ) break;
                 } while ( char.IsWhiteSpace( lastChar ) );
             }
+            return lastChar;
+        }
+
+        private char ReturnOneChar()
+        {
+            lastChar = Input[--currentPosition];
             return lastChar;
         }
 
