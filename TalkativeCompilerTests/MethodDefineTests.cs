@@ -38,5 +38,31 @@ namespace TalkativeCompilerTests
             TalkativeTests.TryTest( test, expected );
 
         }
+
+        [TestMethod]
+        public void MultipleKeywordTest()
+        {
+            var test = "hoge fuga: 10 moge: 'moge'.";
+            var expected = new List<Token>
+            {
+                new Token( TokenType.Identifier, "hoge" ),
+                new Token( TokenType.MessageKeyword, "fuga" ),
+                new Token( TokenType.Numeral, "10" ),
+                new Token( TokenType.MessageKeyword, "moge" ),
+                new Token( TokenType.StringLiteral, "moge" )
+            };
+            TalkativeTests.TryTest( test, expected );
+
+
+            test = "hoge fuga:10 moge: 'moge'.";
+            TalkativeTests.TryTest( test, expected );
+
+
+            test = "hoge fuga:10 moge:'moge'.";
+            TalkativeTests.TryTest( test, expected );
+
+            test = "hoge fuga:10 moge:'moge'";
+            TalkativeTests.TryTest( test, expected );
+        }
     }
 }
