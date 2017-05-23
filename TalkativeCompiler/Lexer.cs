@@ -47,7 +47,7 @@ namespace TalkativeCompiler
 
     internal class Lexer
     {
-        private static readonly string[] PredefinedStrings = { "true", "false", "nil", "self", "super", "thisContext" };
+        private static readonly string[] PredefinedStrings = { "true", "false", "nil", "self", "super", "thisContext", "using" };
         private static readonly string[] Operands = {"+", "-", "*", "/", "//", @"\\", ","};
 
         private string Input { get; }
@@ -66,7 +66,8 @@ namespace TalkativeCompiler
         {
             var tokens = new List<Token>();
 
-            while ( currentPosition < Input.Length )
+            //while ( currentPosition < Input.Length )
+            while ( lastChar != '\0' )
             {
                 Token token = GetNextToken();
                 if(token != null) tokens.Add( token );
@@ -128,10 +129,11 @@ namespace TalkativeCompiler
                             if ( currentPosition >= Input.Length ) break;
                             ProceedToNextChar();
                         }
+                        ProceedToNextChar();
                         return new Token( TokenType.Symbol, symbol );
                     }
                 case ')':
-                    ProceedToNextChar(); // ) を消費
+                    while(lastChar == ')') ProceedToNextChar(); // ) を消費
                     return new Token( TokenType.ArrayEnd, ")" );
                 case ':':
                     // 代入
@@ -186,7 +188,7 @@ namespace TalkativeCompiler
                             }
                             else
                             {
-                                if ( currentPosition >= Input.Length || PeekNextCharWithWhiteSpaces() != '\'' )
+                                if ( PeekNextCharWithWhiteSpaces() != '\'' )
                                 {
                                     break;
                                 }

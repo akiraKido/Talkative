@@ -1,0 +1,10 @@
+"This is a Talkative sample file. Should run."
+
+using System.
+
+Object subclass: #Program.
+Program class classMethodNames: 'main'.
+
+Program class methodFor:'main' := [ :args |
+    Console writeLine: 'Hello World!'.
+]

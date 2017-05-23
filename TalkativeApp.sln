@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkativeCompiler", "Talkat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkativeCompilerTests", "TalkativeCompilerTests\TalkativeCompilerTests.csproj", "{6600D32F-825B-493B-B50F-398233CC5EA0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D91B118E-4475-4CC2-829D-4FB3D2AD872E}"
+	ProjectSection(SolutionItems) = preProject
+		Sample.ta = Sample.ta
+		TalkativeDefinition.md = TalkativeDefinition.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

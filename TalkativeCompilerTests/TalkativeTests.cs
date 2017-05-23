@@ -131,6 +131,33 @@ namespace TalkativeCompilerTests
             TryTest( test, expected );
         }
 
+        [TestMethod]
+        public void TotalTest2()
+        {
+            string test = "Program class methodFor:'main' := [ :args |" +
+                          "Console writeLine: 'Hello World!'." +
+                          "]";
+            var expected = new List<Token>
+            {
+                new Token( TokenType.Identifier, "Program" ),
+                new Token( TokenType.Identifier, "class" ),
+                new Token( TokenType.MessageKeyword, "methodFor" ),
+                new Token( TokenType.StringLiteral, "main" ),
+                new Token( TokenType.AssignmentOperator, ":=" ),
+                new Token( TokenType.BlockStart, "[" ),
+                new Token( TokenType.BlockArgument, "args" ),
+                new Token( TokenType.BlockSeparator, "|" ),
+                new Token( TokenType.Identifier, "Console" ),
+                new Token( TokenType.MessageKeyword, "writeLine" ),
+                new Token( TokenType.StringLiteral, "Hello World!" ),
+                new Token( TokenType.LineBreak, "." ),
+                new Token( TokenType.BlockEnd, "]" ),
+            };
+
+            TryTest( test, expected );
+
+        }
+
         internal static void TryTest(string sourceCode, List<Token> expected)
         {
             var actual = Talkative.GetTokens( sourceCode );

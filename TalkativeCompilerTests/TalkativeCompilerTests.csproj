@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="ArrayTests.cs" />
     <Compile Include="BlockTests.cs" />
+    <Compile Include="DirectiveTests.cs" />
     <Compile Include="LexerUtilityTest.cs" />
     <Compile Include="MessagingTests.cs" />
     <Compile Include="MethodDefineTests.cs" />
